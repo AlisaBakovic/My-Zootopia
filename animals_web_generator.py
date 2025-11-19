@@ -14,27 +14,28 @@ animal_list = load_data("animals_data.json")
 
 output = ""
 
-for animal in animal_list:
+def serialize_animal(animal):
     name = animal["name"]
     diet = animal["characteristics"].get("diet")
     location = animal["locations"][0] if animal["locations"] else None
     type_animal = animal["characteristics"].get("type")
 
-    output += '<li class="cards__item">'
-
-    output += f' <div class="card__title">{name}</div>\n'
-    output += ' <p class="card__text">\n'
-
+    output = '<li class="cards__item">\n'
+    output += f'  <div class="card__title">{name}</div>\n'
+    output += '  <p class="card__text">\n'
     if diet:
-        output += f" <strong>Diet:</strong> {diet}<br/>\n"
+        output += f'      <strong>Diet:</strong> {diet}<br/>\n'
     if location:
-        output += f" <strong>Location:</strong> {location}<br/>\n"
+        output += f'      <strong>Location:</strong> {location}<br/>\n'
     if type_animal:
-        output += f" <strong>Type:</strong> {type_animal}<br/>\n"
+        output += f'      <strong>Type:</strong> {type_animal}<br/>\n'
+    output += '  </p>\n'
+    output += '</li>\n\n'
+    return output
 
-    output += "</p>\n"
-    output += "</li>\n\n"
 
+for animal in animal_list:
+    output += serialize_animal(animal)
 
 new_html = template.replace("__REPLACE_ANIMALS_INFO__", output)
 
