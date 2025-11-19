@@ -1,5 +1,9 @@
 import json
 
+with open("animals_template.html", "r") as f:
+    template = f.read()
+
+
 def load_data(file_path):
 
 
@@ -8,22 +12,29 @@ def load_data(file_path):
 
 animal_list = load_data('animals_data.json')
 
+output = ""
+
 for animal in animal_list:
     name = animal["name"]
     diet = animal["characteristics"].get("diet")
     location = animal["locations"][0]  if animal["locations"] else None
     type_animal = animal["characteristics"].get("type")
 
-    print(f"Name: {name}")
+    output += f"Name: {name}\n"
 
     if diet:
-        print(f"Diet: {diet}")
+        output += f"Diet: {diet}\n"
     if location:
-        print(f"Location: {location}")
+        output += f"Location: {location}\n"
     if type_animal:
-        print(f"Type: {type_animal}")
+        output += f"Type: {type_animal}\n"
 
 
-    print()
+    output += "\n"
 
+
+new_html = template.replace("__REPLACE_ANIMALS_INFO__", output)
+
+with open("animals.html", "w") as f:
+    f.write(new_html)
 
