@@ -12,7 +12,7 @@ def load_data(file_path):
 
 animal_list = load_data('animals_data.json')
 
-output = ""
+output = ''
 
 for animal in animal_list:
     name = animal["name"]
@@ -20,17 +20,20 @@ for animal in animal_list:
     location = animal["locations"][0]  if animal["locations"] else None
     type_animal = animal["characteristics"].get("type")
 
-    output += f"Name: {name}\n"
+    output += '<li class="cards__item">'
+
+
+    output += f"Name: {name}<br/>\n"
 
     if diet:
-        output += f"Diet: {diet}\n"
+        output += f"Diet: {diet}<br/>\n"
     if location:
-        output += f"Location: {location}\n"
+        output += f"Location: {location}<br/>\n"
     if type_animal:
-        output += f"Type: {type_animal}\n"
+        output += f"Type: {type_animal}<br/>\n"
 
 
-    output += "\n"
+    output += '</li>\n\n'
 
 
 new_html = template.replace("__REPLACE_ANIMALS_INFO__", output)
