@@ -1,31 +1,11 @@
-import json
-import requests
+import data_fetcher
 
 with open("animals_template.html", "r") as f:
     template = f.read()
 
 animal_name = input("Enter a name of an animal: ")
 
-url = "https://api.api-ninjas.com/v1/animals"
-api_key= "O3DXXGR57uYbbGGjyVAjDg==NKO7AlaM1Z0zr6wM"
-headers = {
-    "X-Api-Key": api_key
-}
-params = {
-    "name": animal_name
-}
-
-response = requests.get(url, headers=headers, params=params)
-
-print("Status code:", response.status_code)
-
-if response.status_code == 200:
-    animal_list = response.json()
-else:
-    animal_list = []
-
-
-output = ""
+animal_list = data_fetcher.fetch_data(animal_name)
 
 def serialize_animal(animal):
     name = animal["name"]
@@ -46,6 +26,7 @@ def serialize_animal(animal):
     output += '</li>\n\n'
     return output
 
+output = ""
 if animal_list:
     for animal in animal_list:
         output += serialize_animal(animal)
@@ -56,3 +37,5 @@ new_html = template.replace("__REPLACE_ANIMALS_INFO__", output)
 
 with open("animals.html", "w") as f:
     f.write(new_html)
+
+print("Website successfully generated: animals.html")
