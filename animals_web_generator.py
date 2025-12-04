@@ -1,16 +1,29 @@
 import json
+import requests
 
 with open("animals_template.html", "r") as f:
     template = f.read()
 
+animal_name = input("Enter a name of an animal: ")
 
-def load_data(file_path):
+url = "https://api.api-ninjas.com/v1/animals"
+api_key= "O3DXXGR57uYbbGGjyVAjDg==NKO7AlaM1Z0zr6wM"
+headers = {
+    "X-Api-Key": api_key
+}
+params = {
+    "name": animal_name
+}
 
-    with open(file_path, "r") as handle:
-        return json.load(handle)
+response = requests.get(url, headers=headers, params=params)
 
+print("Status code:", response.status_code)
 
-animal_list = load_data("animals_data.json")
+if response.status_code == 200:
+    animal_list = response.json()
+else:
+    animal_list = []
+
 
 output = ""
 
@@ -33,9 +46,11 @@ def serialize_animal(animal):
     output += '</li>\n\n'
     return output
 
-
-for animal in animal_list:
-    output += serialize_animal(animal)
+if animal_list:
+    for animal in animal_list:
+        output += serialize_animal(animal)
+else:
+    output = f'<h2>The animal "{animal_name}" does not exist.</h2>'
 
 new_html = template.replace("__REPLACE_ANIMALS_INFO__", output)
 
